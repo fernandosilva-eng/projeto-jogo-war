@@ -1,52 +1,62 @@
-# Prerequisites
-*.d
+# ==========================================
+# IGNORAR ARQUIVOS COMPILADOS E TEMPORÁRIOS
+# ==========================================
 
-# Object files
+# Objetos compilados
 *.o
-*.ko
 *.obj
-*.elf
 
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
+# Executáveis
 *.exe
 *.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+*.a
+*.so
+*.dll
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# Backups e temporários
+*~
+*.tmp
+*.log
+*.bak
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# ==========================================
+# CONFIGURAÇÕES DE EDITORES
+# ==========================================
+
+# VS Code
+.vscode/
+
+# Code::Blocks
+*.cbp
+*.layout
+*.depend
+
+# Dev-C++
+*.dev
+
+# ==========================================
+# SISTEMAS OPERACIONAIS
+# ==========================================
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# ==========================================
+# OUTROS
+# ==========================================
+
+# Arquivos de build temporários
+build/
+dist/
+bin/
+obj/
+
+# ==========================================
+# OPCIONAL (IGNORAR MAKEFILE DE TESTE)
+# ==========================================
+# Se quiser manter só o Makefile principal:
+# Makefile.old
