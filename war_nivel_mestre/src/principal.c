@@ -30,10 +30,10 @@ void limparBuffer();
 void mapaAtual(Territorios **vTerritorios, int *totalTerritorio);
 void atacar(Territorios *atacante, Territorios *defensor);
 void sortearMissao(char *missaoJogador, char *missoes[], int totalMissoes);
-void sortearTerritotio(int totalTerritorios, Territorios *mapa);
+void sortearJogador(int totalTerritorios, Territorios *mapa);
 void liberarMemoria(char *texto, Territorios *mapa);
-int verificarMissao(char *missao, Territorios *mapa, int tamnho);
-int cadastrar(Territorios **vterritorio, int *totalTerritorio);
+int  verificarMissao(char *missao, Territorios *mapa, int tamnho);
+int  cadastrar(Territorios **vterritorio, int *totalTerritorio);
 
 // --------------------------------------------------------------------------------------- Programa Principal
 
@@ -57,7 +57,7 @@ int main()
 
     mapaAtual(&mapa, &totalTerritorios); // Exibindo todos os territórios
 
-    sortearTerritotio(totalTerritorios, mapa); // sorteando qual sera a cor do exercito do jogador
+    sortearJogador(totalTerritorios, mapa); // sorteando qual sera a cor do exercito do jogador
 
     // Mostra qual sera a missao e o territorio que cumprirar a missao
     char *missao_jogador = (char *)malloc(200 * sizeof(char)); // Alocando memória para a string missão
@@ -400,7 +400,7 @@ void sortearMissao(char *missaoJogador, char *missoes[], int totalMissoes)
 
 // --------------------------------------------------------------------------------------- Sorteia qual territorio vai ficar para o jogador
 
-void sortearTerritotio(int totalTerritorios, Territorios *mapa)
+void sortearJogador(int totalTerritorios, Territorios *mapa)
 {
     srand(time(NULL));
     int min = 0, max = totalTerritorios - 1;
