@@ -60,28 +60,28 @@ int main()
     printf("\n\n==================================================\n      WAR ESTRUTURADO - CADASTRO INICIAL\n==================================================\n\n");
     cadastrar(&mapa, &totalTerritorios); // Cadastrando os territórios do jogo
     mapaAtual(&mapa, &totalTerritorios); // Exibindo todos os territórios
-    sortearJogador(totalTerritorios, mapa); // sorteando qual sera a cor do exercito do jogador
-    // Mostra qual sera a missao e o territorio que cumprirar a missao
+    sortearJogador(totalTerritorios, mapa); // sorteando qual será a cor do exercito do jogador
+    // Mostra qual será a missao e o territorio que cumprirar a missao
     char *missao_jogador = (char *)malloc(200 * sizeof(char)); // Alocando memória para a string missão
     sortearMissao(missao_jogador, vetorMissoes, quantidade_missoes);            // Sorteando a missao
     // Loop principal do jogo começa aqui
     int encerra_loop = 0;
     while (1)
     {
-        // Essa variavel guarda quantos territorios ainda tem tropas. Se ela for igual a 1 o jogo finaliza sozinho.
+        // Essa variavel guarda quantos territorios ainda tem tropas. Se ela for igual a 1 o jogo finaliza.
         int c = 0;
         char vencedor[MAX_NOME];
         // Verifica se os territorios possuem tropas para batalha, se apenas um possuir, o jogo finaliza.
         for (int i = 0; i < totalTerritorios; i++)
         {
-            if (mapa[i].tropas > 0)
+            if (mapa[i].tropas > 0) 
             {
                 c++;
                 strcpy(vencedor, mapa[i].nome);
             }
-            if (totalTerritorios - 1 == i && c == 1)
+            if (totalTerritorios - 1 == i && c == 1) // Se for o último laço e se houver apenas um território com tropas, o mesmo é o vencedor.
             {
-                if (verificarMissao(missao_jogador, mapa, totalTerritorios) == 1)
+                if (verificarMissao(missao_jogador, mapa, totalTerritorios) == 1) // Valida se a missão foi concluída antes de encerrar o programa.
                 {
                     printf("\n           VOCE CUMPRIU SUA MISSAO!\n--------------------------------------------------\n%-9s %+40s \n%-9s %+40s\n", "Missao:", missao_jogador, "Jogador:", Global_Jogador.jogador);
                     printf("%-9s %+40s\n--------------------------------------------------\n\n", "Situacao:", "Missao cumprida");
@@ -96,15 +96,17 @@ int main()
             }
         }
 
-        if (encerra_loop == 1)
-        {
+        if (encerra_loop == 1)  // Encerra o programa.
+        { 
             break;
         }
 
+        // Verificação da missão, ela é feita a cada turno, essa especificamente só acontece após a verificação de tropas dos territorios.
         if (verificarMissao(missao_jogador, mapa, totalTerritorios) == 1)
         {
             printf("\n           VOCE CUMPRIU SUA MISSAO!\n--------------------------------------------------\n%-9s %+40s \n%-9s %+40s\n", "Missao:", missao_jogador, "Jogador:", Global_Jogador.jogador);
             printf("%-9s %+40s\n--------------------------------------------------\n\n", "Situacao:", "Missao cumprida");
+            // Se a missão foi concluida, existe a possibilidade de gerar uma nova missão.
             printf("Sua missao foi cumprida. Qual sera seu proximo passo?\n\n1 - Receber uma nova missao\n0 - Encerrar o Jogo \n\nDigite sua uma das opcoes -> ");
             int opcao;
             scanf("%d", &opcao);
@@ -116,18 +118,19 @@ int main()
                 Global_Jogador.pontuacaoMissao = 0;
             }
             else if (opcao == 0)
-            {
+            { // Jogador opta por sair do jogo.
                 encerra_loop = 1;
             }
         }
 
-        if (encerra_loop == 1)
+        if (encerra_loop == 1) // Encerra o programa.
         {
             break;
         }
 
+
         printf("--- Sua missao (%s) ---\n\n%s ", Global_Jogador.jogador, missao_jogador);
-        int acao = -1;
+        int acao;
         printf("\n\n--- MENU DE ACOES --- \n\n1 - Atacar\n2 - Verificar missao\n0 - Sair\n\nDigite sua acao -> ");
         scanf("%d", &acao);
         limparBuffer();
@@ -221,12 +224,12 @@ void limparBuffer()
 // --------------------------------------------------------------------------------------- Cadastra os territorios no mapa
 
 int cadastrar(Territorios **vterritorio, int *totalTerritorio)
-{ // Entrada de dados
-    //printf("Vamos cadastrar quantos territorios? ");
+{   // Entrada de dados.
+    printf("Vamos cadastrar quantos territorios? ");
     int quantidadeTerritorios=3;
-    //scanf("%d", &quantidadeTerritorios);
-    //limparBuffer();
-    // Alocacao de memoria
+    scanf("%d", &quantidadeTerritorios);
+    limparBuffer();
+    // Alocacao de memoria.
     *vterritorio = (Territorios *)calloc(quantidadeTerritorios, sizeof(Territorios));
     if (*vterritorio == NULL)
     {
@@ -235,8 +238,7 @@ int cadastrar(Territorios **vterritorio, int *totalTerritorio)
                ". Alocacao falhou!\n");
         return 1;
     }
-    // Entrada de dados; Prenche as struct
-    
+    // Entrada de dados; Prenche as struct. 
     for (int i = 0; i < quantidadeTerritorios; i++)
     {
         printf("\n--- Cadastrando Territorio %d ---\n\n", i + 1);
@@ -321,6 +323,7 @@ void atacar(Territorios *atacante, Territorios *defensor)
         if ((strcmp((*atacante).cor, Global_Jogador.jogador) == 0) || (strcmp((*defensor).cor, Global_Jogador.jogador) == 0))
         {
             Global_Jogador.tropasBatalha = -999;
+            // Armazenando o resultado da batalha
         }
     }
 
@@ -418,7 +421,7 @@ int verificarMissao(char *missao, Territorios *mapa, int tamanho)
         else
             Global_Jogador.pontuacaoMissao = 0;
 
-        if (Global_Jogador.pontuacaoMissao == 2)
+        if (Global_Jogador.pontuacaoMissao == 3)
             return 1;
         break;
 
@@ -440,7 +443,7 @@ int verificarMissao(char *missao, Territorios *mapa, int tamanho)
     default:
         break;
     }
-    Global_Jogador.tropasBatalha=0;
+    Global_Jogador.tropasBatalha=0; // Impede que as próximas verificações retorne dados incoerentes.
     return -1;
 }
 
@@ -450,7 +453,7 @@ void sortearMissao(char *missaoJogador, char missoes[][40], int totalMissoes)
 {
     int aleatorio;
     while (1)
-    {
+    { // Garante que a nova missão seja diferente da anterior.
         srand(time(NULL));
         int min = 0, max = totalMissoes - 1;
         int aleatorio = rand() % (max - min + 1) + min;
