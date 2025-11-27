@@ -1,5 +1,6 @@
 // Sistema que simula o Jogo War
 
+//Incluindo bibliotecas necessárias para os bom funcionamento do programa
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,24 +11,24 @@
 
 typedef struct
 {
-    char jogador[MAX_COR];
-    int numero_missao;
-    int tropasBatalha; // guarda o resultado das tropas da última batalha. Ex: perdeu 3 tropas então guarda -3
-    int pontuacaoMissao;   // guarda a quantidade de Global_Jogador.tropasBatalha do jogador.
+    char jogador[MAX_COR]; // Jogador é definido pela sua cor
+    int numero_missao; // São cinco missões cada uma com um número, aqui fica o número da missão atual do jogador
+    int tropasBatalha; // Guarda o resultado das tropas ganhas ou perdidas da última batalha. Ex: perdeu 3 tropas então guarda -3
+    int pontuacaoMissao;   // Guarda a quantidade de pontos do jogador.
 } Jogador;
 
 Jogador Global_Jogador; // Armazena os dados do jogador.
 
 typedef struct
-{
-    char nome[MAX_NOME];
+{   // Armazena nome, a cor e a quantidade de tropas de um território.
+    char nome[MAX_NOME]; 
     char cor[MAX_COR];
     int tropas;
 } Territorios;
 
 // --------------------------------------------------------------------------------------- Declaração das funções que serão usadas
 
-void limparBuffer();
+void limparBuffer(); 
 void mapaAtual(Territorios **vTerritorios, int *totalTerritorio);
 void atacar(Territorios *atacante, Territorios *defensor);
 void sortearMissao(char *missaoJogador, char missoes[][40], int totalMissoes);
@@ -40,7 +41,7 @@ int  cadastrar(Territorios **vterritorio, int *totalTerritorio);
 
 int main()
 {
-    Global_Jogador.numero_missao=-1;
+    Global_Jogador.numero_missao=-1; // I
     Global_Jogador.pontuacaoMissao=0;
     Territorios *mapa;    // Mapa principal
     int totalTerritorios; // Armazenará a quatidade de territórios cadastrados
@@ -235,7 +236,7 @@ int cadastrar(Territorios **vterritorio, int *totalTerritorio)
         return 1;
     }
     // Entrada de dados; Prenche as struct
-    /*
+    
     for (int i = 0; i < quantidadeTerritorios; i++)
     {
         printf("\n--- Cadastrando Territorio %d ---\n\n", i + 1);
@@ -249,25 +250,8 @@ int cadastrar(Territorios **vterritorio, int *totalTerritorio)
         printf("Quantas Tropas ");
         scanf("%d", &(*vterritorio)[i].tropas);
         limparBuffer();
-    }*/
+    }
     // Contabiliza os territoios
-
-
-
-// Apenas para testes <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,,,,,,,,,
-        strcpy((*vterritorio)[0].nome, "China");
-        strcpy((*vterritorio)[0].cor, "Vermelho");
-        (*vterritorio)[0].tropas=1;
-
-        strcpy((*vterritorio)[1].nome, "Brasil");
-        strcpy((*vterritorio)[1].cor, "Verde");
-        (*vterritorio)[1].tropas=1;
-
-        strcpy((*vterritorio)[2].nome, "EUA");
-        strcpy((*vterritorio)[2].cor, "Azul");
-        (*vterritorio)[2].tropas=1;
-
-
     *totalTerritorio = quantidadeTerritorios;
     printf("\nForam cadastrados %d Territorios\n", quantidadeTerritorios);
     return 0;
@@ -283,9 +267,6 @@ void atacar(Territorios *atacante, Territorios *defensor)
 
     int ata = rand() % (max - min + 1) + min;
     int def = rand() % (max - min + 1) + min;
-
-    ata=6; // temporario para teste <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    def=5;
 
     printf("\n--- RESULTADO DA BATALHA ---\n\n");
     printf("O atacante %s rolou o dado e tirou: %d\n", (*atacante).nome, ata);
@@ -447,7 +428,7 @@ int verificarMissao(char *missao, Territorios *mapa, int tamanho)
         {
             Global_Jogador.pontuacaoMissao += Global_Jogador.tropasBatalha;
         }
-        else
+        else if(Global_Jogador.tropasBatalha<0)
         {
             Global_Jogador.pontuacaoMissao -= Global_Jogador.tropasBatalha;
         }
@@ -457,10 +438,10 @@ int verificarMissao(char *missao, Territorios *mapa, int tamanho)
         break;
 
     default:
-        return -1;
         break;
     }
     Global_Jogador.tropasBatalha=0;
+    return -1;
 }
 
 // --------------------------------------------------------------------------------------- Sorteia qual vai ser a missao a ser cumprida pelo jogador que vai ser sorteado
@@ -478,7 +459,6 @@ void sortearMissao(char *missaoJogador, char missoes[][40], int totalMissoes)
             break;
         }
     }
-    aleatorio=3; // só para testes <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     strcpy(missaoJogador, missoes[aleatorio]);
     Global_Jogador.numero_missao = aleatorio;
 }
