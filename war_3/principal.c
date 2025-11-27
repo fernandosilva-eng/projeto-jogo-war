@@ -34,7 +34,7 @@ void atacar(Territorios *atacante, Territorios *defensor);
 void sortearMissao(char *missaoJogador, char missoes[][40], int totalMissoes);
 void sortearJogador(int totalTerritorios, Territorios *mapa);
 void liberarMemoria(char *texto, Territorios *mapa);
-int  verificarMissao(char *missao, Territorios *mapa, int tamanho);
+int  verificarMissao(Territorios *mapa, int tamanho);
 int  cadastrar(Territorios **vterritorio, int *totalTerritorio);
 
 // --------------------------------------------------------------------------------------- Programa Principal
@@ -81,7 +81,7 @@ int main()
             }
             if (totalTerritorios - 1 == i && c == 1) // Se for o último laço e se houver apenas um território com tropas, o mesmo é o vencedor.
             {
-                if (verificarMissao(missao_jogador, mapa, totalTerritorios) == 1) // Valida se a missão foi concluída antes de encerrar o programa.
+                if (verificarMissao(mapa, totalTerritorios) == 1) // Valida se a missão foi concluída antes de encerrar o programa.
                 {
                     printf("\n           VOCE CUMPRIU SUA MISSAO!\n--------------------------------------------------\n%-9s %+40s \n%-9s %+40s\n", "Missao:", missao_jogador, "Jogador:", Global_Jogador.jogador);
                     printf("%-9s %+40s\n--------------------------------------------------\n\n", "Situacao:", "Missao cumprida");
@@ -102,7 +102,7 @@ int main()
         }
 
         // Verificação da missão, ela é feita a cada turno, essa especificamente só acontece após a verificação de tropas dos territorios.
-        if (verificarMissao(missao_jogador, mapa, totalTerritorios) == 1)
+        if (verificarMissao(mapa, totalTerritorios) == 1)
         {
             printf("\n           VOCE CUMPRIU SUA MISSAO!\n--------------------------------------------------\n%-9s %+40s \n%-9s %+40s\n", "Missao:", missao_jogador, "Jogador:", Global_Jogador.jogador);
             printf("%-9s %+40s\n--------------------------------------------------\n\n", "Situacao:", "Missao cumprida");
@@ -178,7 +178,7 @@ int main()
         // Situação 2
         case 2:
             printf("\n              DETALHES DA MISSAO\n--------------------------------------------------\n%-9s %+40s \n%-9s %+40s\n", "Missao:", missao_jogador, "Jogador:", Global_Jogador.jogador);
-            if (verificarMissao(missao_jogador, mapa, totalTerritorios) == 1)
+            if (verificarMissao(mapa, totalTerritorios) == 1)
             {
                 printf("%-9s %+40s\n--------------------------------------------------\n\n", "Situacao:", "Missao cumprida");
             }
@@ -303,11 +303,25 @@ void atacar(Territorios *atacante, Territorios *defensor)
 
         if (strcmp((*defensor).cor, Global_Jogador.jogador) == 0)
         {
-            Global_Jogador.tropasBatalha = (*atacante).tropas / 2;
+            if ((*atacante).tropas == 1)
+            {
+                Global_Jogador.tropasBatalha = 1;
+            }
+            else
+            {
+                Global_Jogador.tropasBatalha = (*atacante).tropas / 2;
+            }
         } // Armazenando o resultado da batalha
         else if (strcmp((*atacante).cor, Global_Jogador.jogador) == 0)
         {
-            Global_Jogador.tropasBatalha = -((*atacante).tropas / 2);
+            if ((*atacante).tropas == 1)
+            {
+                Global_Jogador.tropasBatalha = -1;
+            }
+            else
+            {
+                Global_Jogador.tropasBatalha = -(*atacante).tropas / 2;
+            }
         } // Armazenando o resultado da batalha
 
         printf("VITORIA DA DEFESA! O Atacante perdeu metade das tropas.\n\n");
@@ -356,7 +370,7 @@ void mapaAtual(Territorios **vTerritorios, int *totalTerritorio)
 
 // --------------------------------------------------------------------------------------- Atualiza a pontuação para cada missão
 
-int verificarMissao(char *missao, Territorios *mapa, int tamanho)
+int verificarMissao(Territorios *mapa, int tamanho)
 { 
     /*
         1 Vencer 2 Batalhas seguidas
@@ -376,7 +390,7 @@ int verificarMissao(char *missao, Territorios *mapa, int tamanho)
         else
             Global_Jogador.pontuacaoMissao = 0;
 
-        if (Global_Jogador.pontuacaoMissao == 2)
+        if (Global_Jogador.pontuacaoMissao >= 2)
             return 1;
 
         break;
